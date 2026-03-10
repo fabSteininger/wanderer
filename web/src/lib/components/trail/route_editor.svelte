@@ -185,6 +185,13 @@
                     disabled={!options.autoRouting}
                     label={$_("activity", { values: { n: 1 } })}
                 ></Select>
+            {:else if options.engine === "brouter"}
+                <Select
+                    items={[{ text: $_("trekking"), value: "trekking" }]}
+                    value="trekking"
+                    disabled={true}
+                    label={$_("activity", { values: { n: 1 } })}
+                ></Select>
             {/if}
             <div class="flex items-center gap-4 mt-4">
                 <button
