@@ -153,6 +153,7 @@
 
     let routingOptions: RoutingOptions = $state({
         autoRouting: true,
+        engine: "valhalla",
         modeOfTransport: "pedestrian",
     });
 

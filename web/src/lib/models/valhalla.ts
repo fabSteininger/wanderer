@@ -76,6 +76,7 @@ export interface ValhallaAutoCostingOptions extends ValhallaCostingOptions {
 
 export interface RoutingOptions {
     autoRouting: boolean
+    engine: "valhalla" | "brouter"
     modeOfTransport: "pedestrian" | "bicycle" | "auto"
     pedestrianOptions?: ValhallaPedestrianCostingOptions
     bicycleOptions?: ValhallaBicycleCostingOptions

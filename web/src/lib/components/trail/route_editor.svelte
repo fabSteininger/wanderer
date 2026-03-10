@@ -37,6 +37,11 @@
         onRedo,
     }: Props = $props();
 
+    const routingEngines: SelectItem[] = [
+        { text: "Valhalla", value: "valhalla" },
+        { text: "BRouter", value: "brouter" },
+    ];
+
     const modesOfTransport: SelectItem[] = [
         { text: $_("hiking"), value: "pedestrian" },
         { text: $_("cycling"), value: "bicycle" },
@@ -168,11 +173,19 @@
                 label={$_("enable-auto-routing")}
             ></Toggle>
             <Select
-                items={modesOfTransport}
-                bind:value={options.modeOfTransport}
+                items={routingEngines}
+                bind:value={options.engine}
                 disabled={!options.autoRouting}
-                label={$_("activity", { values: { n: 1 } })}
+                label={$_("engine")}
             ></Select>
+            {#if options.engine === "valhalla"}
+                <Select
+                    items={modesOfTransport}
+                    bind:value={options.modeOfTransport}
+                    disabled={!options.autoRouting}
+                    label={$_("activity", { values: { n: 1 } })}
+                ></Select>
+            {/if}
             <div class="flex items-center gap-4 mt-4">
                 <button
                     class="btn-icon tooltip"
