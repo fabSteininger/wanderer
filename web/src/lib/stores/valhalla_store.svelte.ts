@@ -58,7 +58,31 @@ export async function calculateRouteBetween(startLat: number, startLon: number, 
 
     let shape;
     let duration: number;
-    if (options.autoRouting) {
+    if (options.autoRouting && options.engine === "brouter") {
+        const params = new URLSearchParams({
+            lonlats: `${startLon},${startLat}|${endLon},${endLat}`,
+            profile: "trekking",
+            format: "geojson"
+        });
+
+        const r = await fetch(`/api/v1/brouter?${params.toString()}`);
+
+        if (!r.ok) {
+            const response = await r.json();
+            throw new APIError(r.status, response.message, response.detail)
+        }
+
+        const geojson: GeoJSON.FeatureCollection<GeoJSON.LineString> = await r.json();
+        const lineString = geojson.features[0].geometry;
+        const points = lineString.coordinates;
+        duration = parseInt(geojson.features[0].properties?.["time"] ?? "0");
+
+        const startTime = new Date().getTime();
+        const waypoints = points.map((p, i) => new Waypoint({ $: { lat: p[1], lon: p[0] }, ele: p[2], time: new Date(startTime + (((duration * 1000) / points.length) * i)) }));
+
+        return waypoints;
+
+    } else if (options.autoRouting) {
         let costingBody;
         switch (options.modeOfTransport) {
             case "bicycle":

@@ -54,6 +54,7 @@ services:
       UPLOAD_PASSWORD:
       PUBLIC_OVERPASS_API_URL: https://overpass-api.de
       PUBLIC_VALHALLA_URL: https://valhalla1.openstreetmap.de
+      PUBLIC_BROUTER_URL: https://brouter.de
       PUBLIC_NOMINATIM_URL: https://nominatim.openstreetmap.org
     volumes:
       - uploads:/app/uploads
