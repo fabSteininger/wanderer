@@ -23,7 +23,7 @@ jobs:
 
       - name: Bump versions
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0)
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || git rev-parse --short HEAD)
           BASE_VERSION=${LAST_TAG#v}
           FULL_SHA=$(git rev-parse HEAD)
           VERSION="${BASE_VERSION}-dev+${FULL_SHA}"
