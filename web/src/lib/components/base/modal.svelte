@@ -41,7 +41,6 @@
 <dialog
     {id}
     tabindex="-1"
-    aria-hidden="true"
     class="{size} max-h-full rounded-xl text-content"
 >
     <!-- Modal content -->

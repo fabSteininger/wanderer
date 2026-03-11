@@ -144,7 +144,7 @@
             </div>
             <div>
                 <label
-                    for="waypoint-photo-input"
+                    for="waypoint-photo-input-photo-input"
                     class="text-sm font-medium pb-1"
                 >
                     {$_("photos")}

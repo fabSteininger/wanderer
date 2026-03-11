@@ -14,8 +14,8 @@
 
 		localStorage.theme === 'dark' ||
 			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
-			? document.querySelector("meta[name='color-scheme'" )?.setAttribute("content", 'dark')
-			: document.querySelector("meta[name='color-scheme'" )?.setAttribute("content", 'light')
+			? document.querySelector("meta[name='color-scheme']")?.setAttribute("content", 'dark')
+			: document.querySelector("meta[name='color-scheme']")?.setAttribute("content", 'light')
 	</script>
 	%sveltekit.head%
 </head>

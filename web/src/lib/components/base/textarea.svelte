@@ -33,6 +33,7 @@
     {/if}
     <textarea
         {name}
+        id={name}
         class="bg-input-background border border-input-border rounded-md p-3 resize-none transition-colors focus:border-input-border-focus focus:outline-none focus:ring-0 w-full {extraClasses}"
         {rows}
         {placeholder}
