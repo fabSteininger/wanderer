@@ -70,7 +70,6 @@
     let customTilesetURL: string = $state("");
     let terrainURL: string = $state("");
     let hillshadingURL: string = $state("");
-    let brouterUrl: string = $state("");
     let routingEngine: "valhalla" | "brouter" = $state("valhalla");
 
     onMount(() => {
@@ -80,7 +79,6 @@
 
         terrainURL = settings?.terrain?.terrain ?? "";
         hillshadingURL = settings?.terrain?.hillshading ?? "";
-        brouterUrl = settings?.behavior?.brouterUrl ?? "";
         routingEngine = settings?.behavior?.routingEngine ?? "valhalla";
     });
 
@@ -144,7 +142,7 @@
         });
     }
 
-    async function handleRoutingSave() {
+    async function handleRoutingEngineChange() {
         if (!settings) {
             return;
         }
@@ -154,13 +152,11 @@
             if (!newSettings.behavior) {
                 newSettings.behavior = {
                     allowAutoGeolocate: allowAutoGeolocate,
-                    brouterUrl: brouterUrl,
                     routingEngine: routingEngine,
                 };
             } else {
                 newSettings.behavior = {
                     ...newSettings.behavior,
-                    brouterUrl: brouterUrl,
                     routingEngine: routingEngine,
                 };
             }
@@ -179,11 +175,6 @@
     let terrainSaveEnabled = $derived(
         terrainURL !== settings?.terrain?.terrain ||
             hillshadingURL !== settings?.terrain?.hillshading,
-    );
-
-    let routingSaveEnabled = $derived(
-        brouterUrl !== (settings?.behavior?.brouterUrl ?? "") ||
-            routingEngine !== (settings?.behavior?.routingEngine ?? "valhalla"),
     );
 </script>
 
@@ -308,28 +299,9 @@
                         { text: "BRouter", value: "brouter" },
                     ]}
                     bind:value={routingEngine}
+                    onchange={handleRoutingEngineChange}
                 ></Select>
-
-                <div class="flex items-center gap-2">
-                    <div class="basis-full">
-                        <TextField
-                            label={$_("brouter-url")}
-                            bind:value={brouterUrl}
-                            placeholder="http://localhost:17777"
-                        ></TextField>
-                    </div>
-                    <button
-                        aria-label="Save routing settings"
-                        disabled={!routingSaveEnabled}
-                        class="btn-icon mt-6"
-                        class:hover:!bg-background={!routingSaveEnabled}
-                        onclick={handleRoutingSave}
-                        class:text-gray-500={!routingSaveEnabled}
-                        ><i class="fa fa-save"></i></button
-                    >
-                </div>
             </div>
-            <p class="text-sm text-gray-500 mt-1">{$_("brouter-url-hint")}</p>
         </div>
     </div>
 {/if}
