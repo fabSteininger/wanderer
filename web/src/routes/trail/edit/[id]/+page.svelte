@@ -157,7 +157,6 @@
             page.data.settings?.behavior?.routingEngine ||
             (env.PUBLIC_VALHALLA_URL ? "valhalla" : "brouter"),
         modeOfTransport: "pedestrian",
-        brouterProfile: "trekking",
     });
 
     let savedAtLeastOnce = $state(false);

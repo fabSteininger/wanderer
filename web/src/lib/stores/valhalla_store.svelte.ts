@@ -61,7 +61,7 @@ export async function calculateRouteBetween(startLat: number, startLon: number, 
     if (options.autoRouting && options.engine === "brouter") {
         const params = new URLSearchParams({
             lonlats: `${startLon.toFixed(6)},${startLat.toFixed(6)}|${endLon.toFixed(6)},${endLat.toFixed(6)}`,
-            profile: options.brouterProfile || "trekking",
+            profile: options.brouterProfile!,
             alternativeidx: "0",
             format: "geojson"
         });

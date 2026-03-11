@@ -79,9 +79,19 @@
         };
     }
 
-    if (!options.brouterProfile) {
-        options.brouterProfile = "trekking";
-    }
+    $effect(() => {
+        if (options.engine === "brouter") {
+            if (options.modeOfTransport === "pedestrian") {
+                options.brouterProfile = "hiking-mountain";
+            } else if (
+                options.modeOfTransport === "bicycle" &&
+                (!options.brouterProfile ||
+                    options.brouterProfile === "hiking-mountain")
+            ) {
+                options.brouterProfile = "trekking";
+            }
+        }
+    });
 
     if (!options.bicycleOptions) {
         options.bicycleOptions = {
@@ -197,19 +207,22 @@
                 disabled={!options.autoRouting}
                 label={$_("engine")}
             ></Select>
-            {#if options.engine === "valhalla"}
+            <Select
+                items={options.engine === "valhalla"
+                    ? modesOfTransport
+                    : modesOfTransport.filter((m) => m.value !== "auto")}
+                bind:value={options.modeOfTransport}
+                disabled={!options.autoRouting}
+                label={$_("activity", { values: { n: 1 } })}
+            ></Select>
+            {#if options.engine === "brouter" && options.modeOfTransport === "bicycle"}
                 <Select
-                    items={modesOfTransport}
-                    bind:value={options.modeOfTransport}
-                    disabled={!options.autoRouting}
-                    label={$_("activity", { values: { n: 1 } })}
-                ></Select>
-            {:else if options.engine === "brouter"}
-                <Select
-                    items={brouterProfiles}
+                    items={brouterProfiles.filter(
+                        (p) => p.value !== "hiking-mountain",
+                    )}
                     bind:value={options.brouterProfile}
                     disabled={!options.autoRouting}
-                    label={$_("activity", { values: { n: 1 } })}
+                    label={$_("bike-type")}
                 ></Select>
             {/if}
             <div class="flex items-center gap-4 mt-4">
