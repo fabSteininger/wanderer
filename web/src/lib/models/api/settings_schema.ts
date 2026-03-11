@@ -22,8 +22,11 @@ const SettingsCreateSchema = z.object({
         lists: z.enum(["public", "private"])
     }).optional().nullable(),
     notifications: z.record(z.enum(Object.values(NotificationType) as [string, ...string[]]), z.object({ web: z.boolean(), email: z.boolean() })).optional().nullable(),
-    behavior: z.object({ allowAutoGeolocate: z.boolean() }).optional().nullable(),
+    behavior: z.object({
+        allowAutoGeolocate: z.boolean(),
+        brouterUrl: z.string().url().or(z.literal('')).optional(),
+        routingEngine: z.enum(["valhalla", "brouter"]).optional()
+    }).optional().nullable(),
 }) satisfies ZodType<Settings>
-ZodType<Partial<Comment>>
 
 export { SettingsCreateSchema };
