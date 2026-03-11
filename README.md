@@ -32,7 +32,7 @@ The recommended and quickest way to install wanderer is using docker compose:
 
 ``` bash
 # download the docker compose file
-wget https://raw.githubusercontent.com/open-wanderer/wanderer/main/docker-compose.yml
+wget https://raw.githubusercontent.com/fabSteininger/wanderer/refs/heads/main/docker-compose.yml
 
 # build and launch via docker compose
 docker compose up -d
