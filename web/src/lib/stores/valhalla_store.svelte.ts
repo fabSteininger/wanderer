@@ -61,7 +61,7 @@ export async function calculateRouteBetween(startLat: number, startLon: number, 
     if (options.autoRouting && options.engine === "brouter") {
         const params = new URLSearchParams({
             lonlats: `${startLon.toFixed(6)},${startLat.toFixed(6)}|${endLon.toFixed(6)},${endLat.toFixed(6)}`,
-            profile: "trekking",
+            profile: options.brouterProfile || "trekking",
             alternativeidx: "0",
             format: "geojson"
         });
@@ -76,7 +76,7 @@ export async function calculateRouteBetween(startLat: number, startLon: number, 
         const geojson: GeoJSON.FeatureCollection<GeoJSON.LineString> = await r.json();
         const lineString = geojson.features[0].geometry;
         const points = lineString.coordinates;
-        duration = parseInt(geojson.features[0].properties?.["time"] ?? "0");
+        duration = parseInt(geojson.features[0].properties?.["total-time"] ?? geojson.features[0].properties?.["time"] ?? "0");
 
         const startTime = new Date().getTime();
         const waypoints = points.map((p, i) => new Waypoint({ $: { lat: p[1], lon: p[0] }, ele: p[2], time: new Date(startTime + (((duration * 1000) / points.length) * i)) }));

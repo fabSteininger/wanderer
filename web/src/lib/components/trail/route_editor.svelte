@@ -51,9 +51,16 @@
     });
 
     const modesOfTransport: SelectItem[] = [
-        { text: $_("hiking"), value: "pedestrian" },
-        { text: $_("cycling"), value: "bicycle" },
-        { text: $_("driving"), value: "auto" },
+        { text: $_("pedestrian"), value: "pedestrian" },
+        { text: $_("bicycle"), value: "bicycle" },
+        { text: $_("auto"), value: "auto" },
+    ];
+
+    const brouterProfiles: SelectItem[] = [
+        { text: $_("gravel"), value: "trekking" },
+        { text: $_("gravel-no-ferries"), value: "trekking-noferries" },
+        { text: $_("road-bike"), value: "fastbike" },
+        { text: $_("hiking"), value: "hiking-mountain" },
     ];
 
     const bikeTypes: SelectItem[] = [
@@ -70,6 +77,10 @@
             use_hills: 1,
             shortest: false,
         };
+    }
+
+    if (!options.brouterProfile) {
+        options.brouterProfile = "trekking";
     }
 
     if (!options.bicycleOptions) {
@@ -195,9 +206,9 @@
                 ></Select>
             {:else if options.engine === "brouter"}
                 <Select
-                    items={[{ text: $_("trekking"), value: "trekking" }]}
-                    value="trekking"
-                    disabled={true}
+                    items={brouterProfiles}
+                    bind:value={options.brouterProfile}
+                    disabled={!options.autoRouting}
                     label={$_("activity", { values: { n: 1 } })}
                 ></Select>
             {/if}
