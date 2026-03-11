@@ -13,6 +13,8 @@
     import Slider from "../base/slider.svelte";
     import Toggle from "../base/toggle.svelte";
     import { tick } from "svelte";
+    import { env } from "$env/dynamic/public";
+    import { page } from "$app/state";
     interface Props {
         options: RoutingOptions;
         onReverse: () => void;
@@ -37,10 +39,16 @@
         onRedo,
     }: Props = $props();
 
-    const routingEngines: SelectItem[] = [
-        { text: "Valhalla", value: "valhalla" },
-        { text: "BRouter", value: "brouter" },
-    ];
+    const routingEngines: SelectItem[] = $derived.by(() => {
+        const engines: SelectItem[] = [];
+        if (env.PUBLIC_VALHALLA_URL) {
+            engines.push({ text: "Valhalla", value: "valhalla" });
+        }
+        if (env.PUBLIC_BROUTER_URL || page.data.settings?.behavior?.brouterUrl) {
+            engines.push({ text: "BRouter", value: "brouter" });
+        }
+        return engines;
+    });
 
     const modesOfTransport: SelectItem[] = [
         { text: $_("hiking"), value: "pedestrian" },

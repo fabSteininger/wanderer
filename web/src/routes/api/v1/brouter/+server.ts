@@ -2,11 +2,13 @@ import { env } from '$env/dynamic/public';
 import { json, type RequestEvent } from "@sveltejs/kit";
 
 export async function GET(event: RequestEvent) {
-    if (!env.PUBLIC_BROUTER_URL) {
-        return json({ message: "PUBLIC_BROUTER_URL not set" }, { status: 400 })
+    const brouterUrlSetting = event.locals.settings?.behavior?.brouterUrl;
+
+    if (!env.PUBLIC_BROUTER_URL && !brouterUrlSetting) {
+        return json({ message: "BRouter URL not set" }, { status: 400 })
     }
     const url = new URL(event.request.url);
-    const brouterUrl = new URL('/brouter', env.PUBLIC_BROUTER_URL);
+    const brouterUrl = new URL('/brouter', brouterUrlSetting || env.PUBLIC_BROUTER_URL);
     brouterUrl.search = url.search;
 
     try {

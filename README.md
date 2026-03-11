@@ -4,7 +4,7 @@
 
   <h4>The trail catalogue that makes your GPS data searchable</h4>
 
-[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/flomp/wanderer-web/latest)](https://github.com/open-wanderer/wanderer/)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/github/v/release/open-wanderer/wanderer)](https://github.com/open-wanderer/wanderer/)
 [![GitHub Repo stars](https://img.shields.io/github/stars/open-wanderer/wanderer?style=social)](https://github.com/open-wanderer/wanderer/)
 [![Buy Me A Coffee](https://img.shields.io/badge/Support-wanderer-yellow?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/wanderertrails)
 [![Discord](https://img.shields.io/discord/1249895457396621332?style=social&logo=discord&label=Developer%20Discord)](https://discord.gg/USSEBY98CP)
@@ -37,6 +37,16 @@ wget https://raw.githubusercontent.com/open-wanderer/wanderer/main/docker-compos
 # build and launch via docker compose
 docker compose up -d
 ```
+
+### Docker Registry
+The official docker images are available on GitHub Container Registry (GHCR):
+- `ghcr.io/fabsteininger/wanderer/wanderer-web:latest`
+- `ghcr.io/fabsteininger/wanderer/wanderer-db:latest`
+
+### Routing with BRouter
+wanderer supports [BRouter](http://brouter.de/) for offline routing. You can either:
+1. Set the `PUBLIC_BROUTER_URL` environment variable in your `docker-compose.yml`.
+2. Configure a custom BRouter URL in the user settings under **Settings > Map > Routing**. This is useful if you have a local BRouter instance running (e.g., on http://localhost:17777).
 
 The first startup can take up to 90 seconds after which you can access the frontend at localhost:3000.
 

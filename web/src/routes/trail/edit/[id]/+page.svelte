@@ -153,7 +153,9 @@
 
     let routingOptions: RoutingOptions = $state({
         autoRouting: true,
-        engine: env.PUBLIC_VALHALLA_URL ? "valhalla" : "brouter",
+        engine:
+            page.data.settings?.behavior?.routingEngine ||
+            (env.PUBLIC_VALHALLA_URL ? "valhalla" : "brouter"),
         modeOfTransport: "pedestrian",
     });
 
@@ -1201,7 +1203,7 @@
                 ? $_("upload-new-file")
                 : $_("upload-file")}</Button
         >
-        {#if env.PUBLIC_VALHALLA_URL || env.PUBLIC_BROUTER_URL}
+        {#if env.PUBLIC_VALHALLA_URL || env.PUBLIC_BROUTER_URL || page.data.settings?.behavior?.brouterUrl}
             <div class="flex gap-4 items-center w-full">
                 <hr class="basis-full border-input-border" />
                 <span class="text-gray-500 uppercase">{$_("or")}</span>
