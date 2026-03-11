@@ -142,8 +142,17 @@ const auth: Handle = async ({ event, resolve }) => {
   let actor: Actor | undefined;
 
   if (pb.authStore.record) {
-    settings = await pb.collection('settings').getFirstListItem<Settings>(`user="${pb.authStore.record.id}"`, { requestKey: null })
-    actor = await pb.collection("activitypub_actors").getFirstListItem(`isLocal=1&&user='${pb.authStore.record.id}'`)
+    try {
+      settings = await pb.collection('settings').getFirstListItem<Settings>(`user="${pb.authStore.record.id}"`, { requestKey: null })
+    } catch (_) {
+      // ignore
+    }
+
+    try {
+      actor = await pb.collection("activitypub_actors").getFirstListItem(`isLocal=1&&user='${pb.authStore.record.id}'`)
+    } catch (_) {
+      // ignore
+    }
   }
   const meiliHost = env.MEILI_URL;
   if (!meiliHost) {

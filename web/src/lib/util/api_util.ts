@@ -162,7 +162,11 @@ export function handleError(e: any) {
         return json({ ...e.response, message: e.message, detail: e.originalError.data }, { status: e.status })
     } else if (e instanceof SyntaxError) {
         return json({ message: "invalid_json" }, { status: 400 })
+    } else if (e.status !== undefined || e.httpStatus !== undefined) {
+        // Handle Meilisearch or other errors with a status/httpStatus property
+        const status = e.status ?? e.httpStatus ?? 500;
+        return json({ ...e, message: e.message || e.toString() }, { status });
     } else {
-        return json({ message: e }, { status: 500 })
+        return json({ message: e.message || e.toString() || "Unknown error" }, { status: 500 })
     }
 }
