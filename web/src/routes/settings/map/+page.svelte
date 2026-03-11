@@ -64,6 +64,7 @@
     let customTilesetURL: string = $state("");
     let terrainURL: string = $state("");
     let hillshadingURL: string = $state("");
+    let brouterUrl: string = $state("");
 
     onMount(() => {
         citySearchQuery = settings?.location?.name ?? "";
@@ -72,6 +73,7 @@
 
         terrainURL = settings?.terrain?.terrain ?? "";
         hillshadingURL = settings?.terrain?.hillshading ?? "";
+        brouterUrl = settings?.behavior?.brouterUrl ?? "";
     });
 
     async function searchCities(q: string) {
@@ -134,9 +136,39 @@
         });
     }
 
+    async function handleRoutingSave() {
+        if (!settings) {
+            return;
+        }
+
+        try {
+            if (!settings.behavior) {
+                settings.behavior = {
+                    allowAutoGeolocate: allowAutoGeolocate,
+                    brouterUrl: brouterUrl,
+                };
+            } else {
+                settings.behavior.brouterUrl = brouterUrl;
+            }
+
+            await settings_update(settings);
+        } catch (e) {
+            show_toast({
+                type: "error",
+                icon: "close",
+                text: "Error updating routing settings",
+            });
+            console.error(e);
+        }
+    }
+
     let terrainSaveEnabled = $derived(
         terrainURL !== settings?.terrain?.terrain ||
             hillshadingURL !== settings?.terrain?.hillshading,
+    );
+
+    let routingSaveEnabled = $derived(
+        brouterUrl !== (settings?.behavior?.brouterUrl ?? ""),
     );
 </script>
 
@@ -249,6 +281,29 @@
                     ><i class="fa fa-save"></i></button
                 >
             </div>
+        </div>
+
+        <div>
+            <h4 class="text-xl font-medium mb-2">{$_("routing")}</h4>
+            <div class="flex items-center gap-2">
+                <div class="basis-full">
+                    <TextField
+                        label={$_("brouter-url")}
+                        bind:value={brouterUrl}
+                        placeholder="http://localhost:17777"
+                    ></TextField>
+                </div>
+                <button
+                    aria-label="Save routing settings"
+                    disabled={!routingSaveEnabled}
+                    class="btn-icon mt-6"
+                    class:hover:!bg-background={!routingSaveEnabled}
+                    onclick={handleRoutingSave}
+                    class:text-gray-500={!routingSaveEnabled}
+                    ><i class="fa fa-save"></i></button
+                >
+            </div>
+            <p class="text-sm text-gray-500 mt-1">{$_("brouter-url-hint")}</p>
         </div>
     </div>
 {/if}
