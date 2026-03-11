@@ -41,7 +41,10 @@ export function handleFromRecordWithIRI(record: any) {
     return formatHandle(record.expand.author);
 }
 
-export function formatHandle(actor: { preferred_username?: string; username?: string; isLocal?: boolean; domain?: string }) {
+export function formatHandle(actor: { preferred_username?: string; username?: string; isLocal?: boolean; domain?: string } | undefined | null) {
+    if (!actor) {
+        return "";
+    }
     const username = actor.preferred_username || actor.username || "";
     if (actor.isLocal || actor.domain === "localhost") {
         return `@${username}`;

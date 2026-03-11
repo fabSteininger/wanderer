@@ -37,7 +37,7 @@ export async function PUT(event: RequestEvent) {
                 throw new ClientResponseError({ status: 500, response: { message: "Error checking for duplicates" } })
             }
             if (duplicate !== null) {
-                throw new ClientResponseError({ status: 400, response: { message: `Duplicate trail`, id: duplicate.id, name: duplicate.name, domain: formatHandle({ preferred_username: duplicate.author_name, domain: duplicate.domain }) }, })
+                throw new ClientResponseError({ status: 400, response: { message: `Duplicate trail`, id: duplicate.id, name: duplicate.name, domain: duplicate.domain, author_name: duplicate.author_name } })
             }
         }
 

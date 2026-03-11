@@ -50,7 +50,7 @@
     out:fade={{ duration: 150 }}
 >
     <a
-        href="/profile/{formatHandle(comment.expand.author)}"
+        href="/profile/{formatHandle(comment.expand?.author)}"
         class="text-sm font-semibold shrink-0"
     >
         <img
@@ -63,9 +63,9 @@
         <div class="flex items-center">
             <p class="">
                 <a
-                    href="/profile/{formatHandle(comment.expand.author)}"
+                    href="/profile/{formatHandle(comment.expand?.author)}"
                     class="text-sm font-semibold"
-                    >{formatHandle(comment.expand.author)}</a
+                    >{formatHandle(comment.expand?.author)}</a
                 >
                 <span class="text-xs text-gray-500 ml-2"
                     >{$_(`n-${timeSince.unit}-ago`, {
