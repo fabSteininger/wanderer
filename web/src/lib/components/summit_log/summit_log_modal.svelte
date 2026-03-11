@@ -149,7 +149,7 @@
             </div>
             <div>
                 <label
-                    for="summitlog-photo-input"
+                    for="summitlog-photo-input-photo-input"
                     class="text-sm font-medium pb-1"
                 >
                     {$_("photos")}

@@ -190,6 +190,7 @@
             class="flex-1 min-w-24 bg-input-background focus:outline-none"
             type="search"
             {name}
+            id={name}
             oninput={onSearchType}
             autocomplete="off"
             {onchange}
