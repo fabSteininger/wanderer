@@ -115,7 +115,7 @@
     }
 
     $effect(() => {
-        if (!options.autoRouting) {
+        if (!options.autoRouting || options.engine === "brouter") {
             showSettings = false;
         }
     });
@@ -222,7 +222,7 @@
                     )}
                     bind:value={options.brouterProfile}
                     disabled={!options.autoRouting}
-                    label={$_("bike-type")}
+                    label={$_("profile")}
                 ></Select>
             {/if}
             <div class="flex items-center gap-4 mt-4">
@@ -241,18 +241,20 @@
                     aria-label="Reset route"
                     data-title={$_("reset")}><i class="fa fa-trash"></i></button
                 >
-                <button
-                    class="btn-icon tooltip"
-                    type="button"
-                    disabled={!options.autoRouting}
-                    onclick={() => (showSettings = !showSettings)}
-                    data-title={$_("more-route-settings")}
-                    aria-label="Toggle routing settings"
-                    ><i
-                        class="fa fa-cogs"
-                        class:text-gray-500={!options.autoRouting}
-                    ></i></button
-                >
+                {#if options.engine === "valhalla"}
+                    <button
+                        class="btn-icon tooltip"
+                        type="button"
+                        disabled={!options.autoRouting}
+                        onclick={() => (showSettings = !showSettings)}
+                        data-title={$_("more-route-settings")}
+                        aria-label="Toggle routing settings"
+                        ><i
+                            class="fa fa-cogs"
+                            class:text-gray-500={!options.autoRouting}
+                        ></i></button
+                    >
+                {/if}
             </div>
             {#if showSettings}
                 <div in:slide out:slide>
