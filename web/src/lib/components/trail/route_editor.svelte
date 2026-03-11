@@ -51,9 +51,16 @@
     });
 
     const modesOfTransport: SelectItem[] = [
-        { text: $_("hiking"), value: "pedestrian" },
-        { text: $_("cycling"), value: "bicycle" },
-        { text: $_("driving"), value: "auto" },
+        { text: $_("pedestrian"), value: "pedestrian" },
+        { text: $_("bicycle"), value: "bicycle" },
+        { text: $_("auto"), value: "auto" },
+    ];
+
+    const brouterProfiles: SelectItem[] = [
+        { text: $_("gravel"), value: "trekking" },
+        { text: $_("gravel-no-ferries"), value: "trekking-noferries" },
+        { text: $_("road-bike"), value: "fastbike" },
+        { text: $_("hiking"), value: "hiking-mountain" },
     ];
 
     const bikeTypes: SelectItem[] = [
@@ -71,6 +78,20 @@
             shortest: false,
         };
     }
+
+    $effect(() => {
+        if (options.engine === "brouter") {
+            if (options.modeOfTransport === "pedestrian") {
+                options.brouterProfile = "hiking-mountain";
+            } else if (
+                options.modeOfTransport === "bicycle" &&
+                (!options.brouterProfile ||
+                    options.brouterProfile === "hiking-mountain")
+            ) {
+                options.brouterProfile = "trekking";
+            }
+        }
+    });
 
     if (!options.bicycleOptions) {
         options.bicycleOptions = {
@@ -186,19 +207,22 @@
                 disabled={!options.autoRouting}
                 label={$_("engine")}
             ></Select>
-            {#if options.engine === "valhalla"}
+            <Select
+                items={options.engine === "valhalla"
+                    ? modesOfTransport
+                    : modesOfTransport.filter((m) => m.value !== "auto")}
+                bind:value={options.modeOfTransport}
+                disabled={!options.autoRouting}
+                label={$_("activity", { values: { n: 1 } })}
+            ></Select>
+            {#if options.engine === "brouter" && options.modeOfTransport === "bicycle"}
                 <Select
-                    items={modesOfTransport}
-                    bind:value={options.modeOfTransport}
+                    items={brouterProfiles.filter(
+                        (p) => p.value !== "hiking-mountain",
+                    )}
+                    bind:value={options.brouterProfile}
                     disabled={!options.autoRouting}
-                    label={$_("activity", { values: { n: 1 } })}
-                ></Select>
-            {:else if options.engine === "brouter"}
-                <Select
-                    items={[{ text: $_("trekking"), value: "trekking" }]}
-                    value="trekking"
-                    disabled={true}
-                    label={$_("activity", { values: { n: 1 } })}
+                    label={$_("bike-type")}
                 ></Select>
             {/if}
             <div class="flex items-center gap-4 mt-4">

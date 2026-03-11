@@ -78,6 +78,7 @@ export interface RoutingOptions {
     autoRouting: boolean
     engine: "valhalla" | "brouter"
     modeOfTransport: "pedestrian" | "bicycle" | "auto"
+    brouterProfile?: string
     pedestrianOptions?: ValhallaPedestrianCostingOptions
     bicycleOptions?: ValhallaBicycleCostingOptions
     autoOptions?: ValhallaAutoCostingOptions
