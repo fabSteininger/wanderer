@@ -13,7 +13,7 @@
     } from "$lib/util/format_util";
     import { _ } from "svelte-i18n";
     import ShareInfo from "../share_info.svelte";
-    import { handleFromRecordWithIRI } from "$lib/util/activitypub_util";
+    import { handleFromRecordWithIRI, formatHandle } from "$lib/util/activitypub_util";
     import Chip from "../base/chip.svelte";
 
     interface Props {
@@ -127,7 +127,7 @@
                         `https://api.dicebear.com/7.x/initials/svg?seed=${trail.expand.author.preferred_username}&backgroundType=gradientLinear`}
                     alt="avatar"
                 />
-                {handleFromRecordWithIRI(trail)}
+                {formatHandle(trail.expand.author)}
             </p>
         {/if}
         {#if trail.tags.length && trail.expand?.tags}

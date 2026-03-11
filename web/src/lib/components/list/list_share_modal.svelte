@@ -20,7 +20,7 @@
     import Button from "../base/button.svelte";
     import type { SelectItem } from "../base/select.svelte";
     import Select from "../base/select.svelte";
-    import { handleFromRecordWithIRI } from "$lib/util/activitypub_util";
+    import { handleFromRecordWithIRI, formatHandle } from "$lib/util/activitypub_util";
 
     interface Props {
         list: List;
@@ -162,7 +162,7 @@
                                 alt="avatar"
                             />
                             <p>
-                                {`@${share.expand.actor.preferred_username}${share.expand.actor.isLocal ? "" : "@" + share.expand.actor.domain}`}
+                                {formatHandle(share.expand.actor)}
                             </p>
                             <span
                                 class="basis-full text-sm text-center text-gray-500"

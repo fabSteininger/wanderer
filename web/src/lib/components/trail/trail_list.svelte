@@ -11,6 +11,7 @@
     import SkeletonListItem from "../base/skeleton_list_item.svelte";
     import { onMount, tick } from "svelte";
     import TrailDropdown from "$lib/components/trail/trail_dropdown.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     interface Props {
         filter?: TrailFilter | null;
@@ -399,9 +400,7 @@
                     <a
                         class="max-w-full flex-1"
                         class:basis-full={selectedDisplayOption === "list"}
-                        href="/trail/view/@{trail.author}{trail.domain
-                            ? `@${trail.domain}`
-                            : ''}/{trail.id}"
+                        href="/trail/view/{formatHandle({ preferred_username: trail.author, domain: trail.domain })}/{trail.id}"
                         onmouseenter={(e) => handleMouseEnter(trail)}
                         onmouseleave={(e) => handleMouseLeave(trail)}
                     >

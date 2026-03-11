@@ -12,6 +12,7 @@
     } from "$lib/util/format_util";
     import { _ } from "svelte-i18n";
     import type { MouseEventHandler } from "svelte/elements";
+    import { formatHandle } from "$lib/util/activitypub_util";
     import Chip from "../base/chip.svelte";
 
     interface Props {
@@ -170,10 +171,7 @@
                             `https://api.dicebear.com/7.x/initials/svg?seed=${trail.expand.author.preferred_username}&backgroundType=gradientLinear`}
                         alt="avatar"
                     />
-                    {trail.expand.author.preferred_username}{trail.expand.author
-                        .isLocal
-                        ? ""
-                        : "@" + trail.expand.author.domain}
+                    {formatHandle(trail.expand.author)}
                 </p>
             {/if}
             {#if trail.tags.length}

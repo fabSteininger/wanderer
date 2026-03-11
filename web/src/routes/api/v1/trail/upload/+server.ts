@@ -3,6 +3,7 @@ import { haversineDistance } from "$lib/models/gpx/utils";
 import type { Trail, TrailSearchResult } from "$lib/models/trail";
 import { searchLocationReverse } from "$lib/stores/search_store";
 import { trails_create } from "$lib/stores/trail_store";
+import { formatHandle } from "$lib/util/activitypub_util";
 import { handleError } from "$lib/util/api_util";
 import { fromFile, gpx2trail } from "$lib/util/gpx_util";
 import { json, type RequestEvent } from "@sveltejs/kit";
@@ -36,7 +37,7 @@ export async function PUT(event: RequestEvent) {
                 throw new ClientResponseError({ status: 500, response: { message: "Error checking for duplicates" } })
             }
             if (duplicate !== null) {
-                throw new ClientResponseError({ status: 400, response: { message: `Duplicate trail`, id: duplicate.id, name: duplicate.name, domain: `${duplicate.author_name}${duplicate.domain ? '@' + duplicate.domain : ''}` }, })
+                throw new ClientResponseError({ status: 400, response: { message: `Duplicate trail`, id: duplicate.id, name: duplicate.name, domain: formatHandle({ preferred_username: duplicate.author_name, domain: duplicate.domain }) }, })
             }
         }
 

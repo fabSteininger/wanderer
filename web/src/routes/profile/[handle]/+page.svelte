@@ -11,6 +11,7 @@
     import { getFileURL } from "$lib/util/file_util.js";
     import { untrack } from "svelte";
     import { _ } from "svelte-i18n";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     let { data } = $props();
 
@@ -50,11 +51,11 @@
         const author = f.expand.item.expand?.author;
         if (f.type == "trail") {
             goto(
-                `/trail/view/@${author?.preferred_username}@${author?.domain}/${f.item}`,
+                `/trail/view/${formatHandle(author)}/${f.item}`,
             );
         } else {
             goto(
-                `/lists/@${author?.preferred_username}@${author?.domain}/${f.item}`,
+                `/lists/${formatHandle(author)}/${f.item}`,
             );
         }
     }

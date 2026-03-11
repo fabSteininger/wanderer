@@ -4,7 +4,7 @@
     import { _ } from "svelte-i18n";
     import { untrack } from "svelte";
     import { fade } from "svelte/transition";
-    import { handleFromRecordWithIRI } from "$lib/util/activitypub_util";
+    import { handleFromRecordWithIRI, formatHandle } from "$lib/util/activitypub_util";
     import Editor from "../base/editor.svelte";
 
     interface Props {
@@ -50,7 +50,7 @@
     out:fade={{ duration: 150 }}
 >
     <a
-        href="/profile/{handleFromRecordWithIRI(comment)}"
+        href="/profile/{formatHandle(comment.expand.author)}"
         class="text-sm font-semibold shrink-0"
     >
         <img
@@ -63,9 +63,9 @@
         <div class="flex items-center">
             <p class="">
                 <a
-                    href="/profile/{handleFromRecordWithIRI(comment)}"
+                    href="/profile/{formatHandle(comment.expand.author)}"
                     class="text-sm font-semibold"
-                    >{handleFromRecordWithIRI(comment)}</a
+                    >{formatHandle(comment.expand.author)}</a
                 >
                 <span class="text-xs text-gray-500 ml-2"
                     >{$_(`n-${timeSince.unit}-ago`, {

@@ -22,6 +22,7 @@
     import type { Actor } from "$lib/models/activitypub/actor";
     import { searchActors } from "$lib/stores/search_store";
     import { show_toast } from "$lib/stores/toast_store.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     let element: HTMLElement;
     let editor: Editor | undefined = $state();
@@ -106,7 +107,7 @@
                                 );
                                 return actors.map((a) => ({
                                     text: a.username!,
-                                    description: `@${a.preferred_username}${a.isLocal ? "" : "@" + a.domain}`,
+                                    description: formatHandle(a),
                                     value: a,
                                     icon:
                                         a.icon ||
@@ -151,7 +152,7 @@
                                 return (_: Event, item: SearchItem) => {
                                     props.command({
                                         id: item.value.iri,
-                                        label: `${item.value.username}${item.value.isLocal ? "" : "@" + item.value.domain}`,
+                                        label: formatHandle(item.value).substring(1),
                                     });
                                 };
                             }

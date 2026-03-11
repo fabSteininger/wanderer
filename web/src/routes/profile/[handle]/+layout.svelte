@@ -11,6 +11,7 @@
     import errorDark from "$lib/assets/svgs/empty_states/error_dark.svg";
     import errorLight from "$lib/assets/svgs/empty_states/error_light.svg";
     import MetaTags from "$lib/components/base/meta_tags.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     let { data, children } = $props();
 
@@ -93,7 +94,7 @@
                         {data.profile.username ?? "?"}
                     </h4>
                     <p class="text-sm text-gray-500 mb-4 break-all">
-                        {data.profile.acct}
+                        {formatHandle(data.actor)}
                     </p>
                 </div>
             </div>

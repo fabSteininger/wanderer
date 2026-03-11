@@ -12,6 +12,7 @@
     } from "$lib/util/format_util";
     import { _ } from "svelte-i18n";
     import TrailDropdown from "../trail/trail_dropdown.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
     interface Props {
         feedItem: FeedItem;
     }
@@ -44,7 +45,7 @@
         {/if}
     </p>
 
-    <a href="/profile/{author?.preferred_username}@{author?.domain}">
+    <a href="/profile/{formatHandle(author)}">
         <div class="feed-card-header flex gap-x-4 items-start">
             <img
                 class="rounded-full w-10 aspect-square overflow-hidden shrink-0"
@@ -55,7 +56,7 @@
             <div>
                 <span class="font-semibold">{author?.preferred_username}</span>
                 <p class="text-sm text-gray-500 mb-3">
-                    {author?.preferred_username}@{author?.domain}
+                    {formatHandle(author)}
                 </p>
             </div>
             <div class="basis-full"></div>
@@ -69,7 +70,7 @@
     <a
         class="block"
         href={(feedItem.type === "trail" ? "/trail/view/" : "/lists/") +
-            `@${author?.preferred_username}@${author?.domain}/${feedItem.item}`}
+            `${formatHandle(author)}/${feedItem.item}`}
     >
         <div class="feed-card-body">
             <h3 class="text-2xl font-semibold mb-2">

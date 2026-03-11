@@ -7,6 +7,7 @@
     import { slide } from "svelte/transition";
     import { _ } from "svelte-i18n";
     import { goto } from "$app/navigation";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     let minimized: boolean = $state(false);
 
@@ -183,7 +184,7 @@
                             <button
                                 class="underline"
                                 onclick={() =>
-                                    goto(`/trail/view/@${u.duplicate?.domain}/${u.duplicate!.id}`)}
+                                    goto(`/trail/view/${formatHandle({ preferred_username: u.duplicate?.author_name, domain: u.duplicate?.domain })}/${u.duplicate!.id}`)}
                                 >{u.duplicate.name}</button
                             >
                         </p>

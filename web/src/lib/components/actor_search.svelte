@@ -4,6 +4,7 @@
     import { show_toast } from "$lib/stores/toast_store.svelte";
     import { _ } from "svelte-i18n";
     import Search, { type SearchItem } from "./base/search.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     interface Props {
         label?: string;
@@ -35,7 +36,7 @@
             const actors: Actor[] = await searchActors(q, includeSelf);
             searchItems = actors.map((a) => ({
                 text: a.username,
-                description: `@${a.preferred_username}${a.isLocal ? "" : "@" + a.domain}`,
+                description: formatHandle(a),
                 value: a,
                 icon: "user",
             }));

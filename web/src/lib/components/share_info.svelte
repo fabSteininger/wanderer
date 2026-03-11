@@ -2,7 +2,7 @@
     import type { List } from "$lib/models/list";
     import type { Trail } from "$lib/models/trail";
     import { currentUser } from "$lib/stores/user_store";
-    import { handleFromRecordWithIRI } from "$lib/util/activitypub_util";
+    import { handleFromRecordWithIRI, formatHandle } from "$lib/util/activitypub_util";
     import { _ } from "svelte-i18n";
     import { fly } from "svelte/transition";
 
@@ -55,7 +55,7 @@
                                         alt="avatar"
                                     />
                                     <p class="font-semibold text-base">
-                                        {`@${share.expand.actor.username}${share.expand.actor.isLocal ? "" : "@" + share.expand.actor.domain}`}
+                                        {formatHandle(share.expand.actor)}
                                     </p>
                                     <span class="mx-2 text-sm text-gray-500"
                                         >{$_("can")}</span

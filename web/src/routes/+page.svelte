@@ -23,6 +23,7 @@
     } from "$lib/stores/search_store.js";
     import { theme } from "$lib/stores/theme_store";
     import { getIconForLocation } from "$lib/util/icon_util.js";
+    import { formatHandle } from "$lib/util/activitypub_util";
     import { Canvas } from "@threlte/core";
     import { marked } from "marked";
     import { onMount, untrack } from "svelte";
@@ -60,7 +61,7 @@
             const actors = await searchActors(q);
             searchDropdownItems = actors.map((a) => ({
                 text: a.username,
-                description: `@${a.preferred_username}${a.isLocal ? "" : "@" + a.domain}`,
+                description: formatHandle(a),
                 value: a,
                 icon:
                     a.icon ||
@@ -90,13 +91,13 @@
             const trailItems = r[0].hits.map((t: TrailSearchResult) => ({
                 text: t.name,
                 description: `Trail ${t.location.length ? ", " + t.location : ""}`,
-                value: `@${t.author_name}${t.domain ? `@${t.domain}` : ""}/${t.id}`,
+                value: `${formatHandle({ preferred_username: t.author_name, domain: t.domain })}/${t.id}`,
                 icon: "route",
             }));
             const listItems = r[1].hits.map((t: ListSearchResult) => ({
                 text: t.name,
                 description: `List, ${t.trails} ${$_("trail", { values: { n: t.trails } })}`,
-                value: `@${t.author_name}${t.domain ? `@${t.domain}` : ""}/${t.id}`,
+                value: `${formatHandle({ preferred_username: t.author_name, domain: t.domain })}/${t.id}`,
                 icon: "layer-group",
             }));
             const cityItems = r[2].hits.map((c: LocationSearchResult) => ({
@@ -117,7 +118,7 @@
             goto(`/lists/${item.value}`);
         } else if (item.value.preferred_username) {
             goto(
-                `/profile/@${item.value.preferred_username}${item.value.isLocal ? "" : "@" + item.value.domain}`,
+                `/profile/${formatHandle(item.value)}`,
             );
         } else {
             goto(`/map/?lat=${item.value.lat}&lon=${item.value.lon}`);
@@ -228,9 +229,7 @@
                 {#each data.trails as trail}
                     <a
                         class="w-full block"
-                        href="/trail/view/@{trail.author}{trail.domain
-                            ? '@' + trail.domain
-                            : ''}/{trail.id}"
+                        href="/trail/view/{formatHandle({ preferred_username: trail.author, domain: trail.domain })}/{trail.id}"
                     >
                         <TrailCard
                             {trail}

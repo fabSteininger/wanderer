@@ -11,6 +11,7 @@
     import { _ } from "svelte-i18n";
     import PhotoGallery from "../photo_gallery.svelte";
     import Dropdown, { type DropdownItem } from "../base/dropdown.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     interface Props {
         log: SummitLog;
@@ -189,16 +190,10 @@
         <td>
             <p
                 class="tooltip flex justify-center"
-                data-title="@{log.expand.author.preferred_username}{log.expand.author
-                    .isLocal
-                    ? ''
-                    : '@' + log.expand.author.domain}"
+                data-title={formatHandle(log.expand.author)}
             >
                 <a
-                    href="/profile/@{log.expand.author.preferred_username?.toLowerCase()}{log
-                        .expand.author.isLocal
-                        ? ''
-                        : '@' + log.expand.author.domain}"
+                    href="/profile/{formatHandle(log.expand.author)}"
                 >
                     <img
                         class="rounded-full w-7 aspect-square"

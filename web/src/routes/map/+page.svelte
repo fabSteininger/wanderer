@@ -28,6 +28,7 @@
     } from "$lib/stores/search_store";
     import { trails_search_bounding_box } from "$lib/stores/trail_store";
     import { getIconForLocation } from "$lib/util/icon_util";
+    import { formatHandle } from "$lib/util/activitypub_util";
     import type { Snapshot } from "@sveltejs/kit";
     import * as M from "maplibre-gl";
     import { _ } from "svelte-i18n";
@@ -101,7 +102,7 @@
         const trailItems = r[0].hits.map((t: TrailSearchResult) => ({
             text: t.name,
             description: `Trail ${t.location.length ? ", " + t.location : ""}`,
-            value: `@${t.author_name}${t.domain ? `@${t.domain}` : ""}/${t.id}`,
+            value: `${formatHandle({ preferred_username: t.author_name, domain: t.domain })}/${t.id}`,
             icon: "route",
         }));
         const listItems = r[1].hits.map((t: ListSearchResult) => ({
@@ -393,9 +394,7 @@
                 {/if}
                 {#each trails as trail, i}
                     <a
-                        href="/map/trail/@{trail.author}{trail.domain
-                            ? `@${trail.domain}`
-                            : ''}/{trail.id}"
+                        href="/map/trail/{formatHandle({ preferred_username: trail.author, domain: trail.domain })}/{trail.id}"
                     >
                         <TrailCard
                             {trail}

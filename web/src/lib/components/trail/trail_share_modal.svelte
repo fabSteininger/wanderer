@@ -23,6 +23,7 @@
         trail_link_share_delete,
         trail_link_share_index,
     } from "$lib/stores/trail_link_share_store";
+    import { formatHandle } from "$lib/util/activitypub_util";
 
     interface Props {
         trail?: Trail;
@@ -171,7 +172,7 @@
                                 alt="avatar"
                             />
                             <p>
-                                {`@${share.expand.actor.username}${share.expand.actor.isLocal ? "" : "@" + share.expand.actor.domain}`}
+                                {formatHandle(share.expand.actor)}
                             </p>
                             <span
                                 class="basis-full text-sm text-gray-500 text-end"

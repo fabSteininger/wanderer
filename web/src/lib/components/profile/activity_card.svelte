@@ -9,6 +9,7 @@
         formatTimeHHMM,
     } from "$lib/util/format_util";
     import { _ } from "svelte-i18n";
+    import { formatHandle } from "$lib/util/activitypub_util";
     interface Props {
         activity: TimelineItem;
         actor: Actor;
@@ -28,7 +29,7 @@
             alt="avatar"
         />
         <div>
-            <span class="font-semibold">{actor.preferred_username}</span>
+            <span class="font-semibold">{formatHandle(actor)}</span>
             {activity.type === "trail"
                 ? $_("planned-a-trail")
                 : $_("completed-a-trail")}

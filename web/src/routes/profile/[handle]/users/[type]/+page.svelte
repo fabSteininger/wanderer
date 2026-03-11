@@ -5,6 +5,7 @@
     import { APIError } from "$lib/util/api_util.js";
     import { untrack } from "svelte";
     import { _ } from "svelte-i18n";
+    import { formatHandle } from "$lib/util/activitypub_util";
     let { data } = $props();
 
     let follows = $state(untrack(() => data.follows));
@@ -65,9 +66,7 @@
     <ul class="space-y-4">
         {#each follows.items as follow}
             <a
-                href="/profile/@{follow.preferred_username}{follow.isLocal
-                    ? ''
-                    : '@' + follow.domain}"
+                href="/profile/{formatHandle(follow)}"
             >
                 <li
                     class="flex items-center gap-x-4 hover:bg-menu-item-background-hover p-2"
@@ -83,7 +82,7 @@
                             {follow.username}
                         </p>
                         <p class="text-sm text-gray-500 break-all">
-                            @{follow.preferred_username}@{follow.domain}
+                            {formatHandle(follow)}
                         </p>
                     </div>
                 </li>

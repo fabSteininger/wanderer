@@ -161,6 +161,51 @@
 
     let savedAtLeastOnce = $state(false);
 
+    $effect(() => {
+        const { engine, modeOfTransport, brouterProfile } = routingOptions;
+
+        if (drawingActive && untrack(() => valhallaStore.anchors.length) > 1) {
+            untrack(async () => {
+                const anchors = valhallaStore.anchors;
+                for (let i = 1; i < anchors.length; i++) {
+                    const previousAnchor = valhallaStore.anchors[i - 1];
+                    const anchor = valhallaStore.anchors[i];
+                    const markerText = startAnchorLoading(anchor);
+                    try {
+                        const routeWaypoints = await calculateRouteBetween(
+                            previousAnchor.lat,
+                            previousAnchor.lon,
+                            anchor.lat,
+                            anchor.lon,
+                            routingOptions,
+                        );
+                        editRoute(i - 1, routeWaypoints);
+                    } catch (e) {
+                        console.error(e);
+                    } finally {
+                        stopAnchorLoading(anchor, markerText);
+                    }
+                }
+                updateTrailWithRouteData();
+                normalizeRouteTime();
+            });
+        }
+    });
+
+    $effect(() => {
+        const mode = routingOptions.modeOfTransport;
+        untrack(() => {
+            const hikingCategory = $categories.find((c) => c.name === "Hiking");
+            const bikingCategory = $categories.find((c) => c.name === "Biking");
+
+            if (mode === "pedestrian" && hikingCategory) {
+                setFields("category", hikingCategory.id);
+            } else if (mode === "bicycle" && bikingCategory) {
+                setFields("category", bikingCategory.id);
+            }
+        });
+    });
+
     let tagItems: ComboboxItem[] = $state([]);
 
     const getInitialFormValues = () => ({

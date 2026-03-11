@@ -10,6 +10,7 @@
     import { goto } from "$app/navigation";
     import { getFileURL } from "$lib/util/file_util";
     import ShareInfo from "../share_info.svelte";
+    import { formatHandle } from "$lib/util/activitypub_util";
     
     interface Props {
         tableHeader: SelectItem[];
@@ -132,9 +133,7 @@
                         class="border-t border-input-border cursor-pointer hover:bg-secondary-hover transition-colors"
                         onclick={() =>
                             goto(
-                                `/trail/view/@${trail.author}${
-                                    trail.domain ? `@${trail.domain}` : ""
-                                }/${trail.id}`,
+                                `/trail/view/${formatHandle({ preferred_username: trail.author, domain: trail.domain, isLocal: trail.expand?.author?.isLocal })}/${trail.id}`,
                             )}
                     >
                         <td class="p-4 text-sm">
@@ -157,7 +156,7 @@
                                 {#if trail.expand && trail.expand.author}
                                     <div class="author-icon">
                                         <img
-                                            title={`${trail.public ? $_("public") + " " : ""}${$_("by")} @${trail.expand.author.preferred_username}${trail.expand.author.isLocal ? "" : "@" + trail.expand.author.domain}`}
+                                            title={`${trail.public ? $_("public") + " " : ""}${$_("by")} ${formatHandle(trail.expand.author)}`}
                                             class="rounded-full w-5 aspect-square mx-1 inline"
                                             src={trail.expand.author.icon ||
                                                 `https://api.dicebear.com/7.x/initials/svg?seed=${trail.expand.author.preferred_username}&backgroundType=gradientLinear`}
