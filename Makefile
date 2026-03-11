@@ -18,7 +18,7 @@ db-build:
 
 .PHONY: db-build-docker
 db-build-docker: db-build
-	docker buildx build db/ --no-cache -t wanderer-db:latest --load
+	docker buildx build db/ -t wanderer-db:latest --load
 
 ## Web
 
@@ -40,4 +40,4 @@ web-test:
 
 .PHONY: web-build-docker
 web-build-docker:
-	docker buildx build web/ --no-cache -t wanderer-web:latest --load
+	docker buildx build web/ -t wanderer-web:latest --load

@@ -44,7 +44,7 @@
         if (env.PUBLIC_VALHALLA_URL) {
             engines.push({ text: "Valhalla", value: "valhalla" });
         }
-        if (env.PUBLIC_BROUTER_URL || page.data.settings?.behavior?.brouterUrl) {
+        if (env.PUBLIC_BROUTER_URL) {
             engines.push({ text: "BRouter", value: "brouter" });
         }
         return engines;
