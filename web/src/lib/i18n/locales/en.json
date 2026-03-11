@@ -100,6 +100,7 @@
   "date": "Date",
   "default-category": "Default category",
   "default-location": "Default Location",
+  "default-routing-engine": "Default Routing Engine",
   "degrees": "Degrees",
   "delete": "Delete",
   "delete-account": "Delete Account",

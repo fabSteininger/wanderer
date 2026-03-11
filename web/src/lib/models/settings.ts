@@ -58,6 +58,7 @@ class Settings {
 export type Behavior = {
     allowAutoGeolocate: boolean;
     brouterUrl?: string;
+    routingEngine?: "valhalla" | "brouter";
 }
 
 

@@ -153,7 +153,9 @@
 
     let routingOptions: RoutingOptions = $state({
         autoRouting: true,
-        engine: env.PUBLIC_VALHALLA_URL ? "valhalla" : "brouter",
+        engine:
+            page.data.settings?.behavior?.routingEngine ||
+            (env.PUBLIC_VALHALLA_URL ? "valhalla" : "brouter"),
         modeOfTransport: "pedestrian",
     });
 

@@ -32,13 +32,19 @@
         }
 
         try {
-            if (!settings.behavior) {
-                settings.behavior = { allowAutoGeolocate: allowAutoGeolocate };
+            const newSettings = { ...settings };
+            if (!newSettings.behavior) {
+                newSettings.behavior = {
+                    allowAutoGeolocate: allowAutoGeolocate,
+                };
             } else {
-                settings.behavior.allowAutoGeolocate = allowAutoGeolocate;
+                newSettings.behavior = {
+                    ...newSettings.behavior,
+                    allowAutoGeolocate: allowAutoGeolocate,
+                };
             }
 
-            await settings_update(settings);
+            await settings_update(newSettings);
         } catch (e) {
             show_toast({
                 type: "error",
@@ -65,6 +71,7 @@
     let terrainURL: string = $state("");
     let hillshadingURL: string = $state("");
     let brouterUrl: string = $state("");
+    let routingEngine: "valhalla" | "brouter" = $state("valhalla");
 
     onMount(() => {
         citySearchQuery = settings?.location?.name ?? "";
@@ -74,6 +81,7 @@
         terrainURL = settings?.terrain?.terrain ?? "";
         hillshadingURL = settings?.terrain?.hillshading ?? "";
         brouterUrl = settings?.behavior?.brouterUrl ?? "";
+        routingEngine = settings?.behavior?.routingEngine ?? "valhalla";
     });
 
     async function searchCities(q: string) {
@@ -142,16 +150,22 @@
         }
 
         try {
-            if (!settings.behavior) {
-                settings.behavior = {
+            const newSettings = { ...settings };
+            if (!newSettings.behavior) {
+                newSettings.behavior = {
                     allowAutoGeolocate: allowAutoGeolocate,
                     brouterUrl: brouterUrl,
+                    routingEngine: routingEngine,
                 };
             } else {
-                settings.behavior.brouterUrl = brouterUrl;
+                newSettings.behavior = {
+                    ...newSettings.behavior,
+                    brouterUrl: brouterUrl,
+                    routingEngine: routingEngine,
+                };
             }
 
-            await settings_update(settings);
+            await settings_update(newSettings);
         } catch (e) {
             show_toast({
                 type: "error",
@@ -168,7 +182,8 @@
     );
 
     let routingSaveEnabled = $derived(
-        brouterUrl !== (settings?.behavior?.brouterUrl ?? ""),
+        brouterUrl !== (settings?.behavior?.brouterUrl ?? "") ||
+            routingEngine !== (settings?.behavior?.routingEngine ?? "valhalla"),
     );
 </script>
 
@@ -285,23 +300,34 @@
 
         <div>
             <h4 class="text-xl font-medium mb-2">{$_("routing")}</h4>
-            <div class="flex items-center gap-2">
-                <div class="basis-full">
-                    <TextField
-                        label={$_("brouter-url")}
-                        bind:value={brouterUrl}
-                        placeholder="http://localhost:17777"
-                    ></TextField>
+            <div class="space-y-4">
+                <Select
+                    label={$_("default-routing-engine")}
+                    items={[
+                        { text: "Valhalla", value: "valhalla" },
+                        { text: "BRouter", value: "brouter" },
+                    ]}
+                    bind:value={routingEngine}
+                ></Select>
+
+                <div class="flex items-center gap-2">
+                    <div class="basis-full">
+                        <TextField
+                            label={$_("brouter-url")}
+                            bind:value={brouterUrl}
+                            placeholder="http://localhost:17777"
+                        ></TextField>
+                    </div>
+                    <button
+                        aria-label="Save routing settings"
+                        disabled={!routingSaveEnabled}
+                        class="btn-icon mt-6"
+                        class:hover:!bg-background={!routingSaveEnabled}
+                        onclick={handleRoutingSave}
+                        class:text-gray-500={!routingSaveEnabled}
+                        ><i class="fa fa-save"></i></button
+                    >
                 </div>
-                <button
-                    aria-label="Save routing settings"
-                    disabled={!routingSaveEnabled}
-                    class="btn-icon mt-6"
-                    class:hover:!bg-background={!routingSaveEnabled}
-                    onclick={handleRoutingSave}
-                    class:text-gray-500={!routingSaveEnabled}
-                    ><i class="fa fa-save"></i></button
-                >
             </div>
             <p class="text-sm text-gray-500 mt-1">{$_("brouter-url-hint")}</p>
         </div>
